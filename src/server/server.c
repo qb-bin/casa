@@ -43,6 +43,7 @@ int main() {
         perror("accept");
         exit(1);
     }
+    puts("client connected");
 
     send(s2, message_ptr, strlen(message_ptr), 0);
     read(s2, in_buf, BUFFER_SIZE - 1);

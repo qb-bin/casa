@@ -14,7 +14,7 @@
 #include <netdb.h>
 
 #define  PORT       2024
-#define ADDRESS     "127.0.0.1"
+#define ADDRESS     "192.168.1.105"
 #define BUFFER_SIZE 1024
 
 int main() {
