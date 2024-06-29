@@ -8,7 +8,7 @@
 #include <arpa/inet.h>
 
 #define PORT        2024
-#define BUFFER_SIZE 256
+#define BUFFER_SIZE 1024
 
 int main() {
     puts("[casa started]");
