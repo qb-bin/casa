@@ -8,7 +8,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#define PORT        2024
+#define PORT        9340
 #define BUFFER_SIZE 1024
 
 int main() {
