@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys//types.h>
+
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -12,13 +13,13 @@
 
 int main() {
     puts("[casa started]");
-    char *message_ptr = "connection established\n";
+    char *message = "connection established\n";
     char out_buf[BUFFER_SIZE] = {0};
     char in_buf[BUFFER_SIZE]  = {0};
     
     int s1, s2, num;
     struct sockaddr_in addr; 
-    int addr_len = sizeof(addr);
+    int addrlen = sizeof(addr);
 
     if((s1 = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         perror("socket");
@@ -29,7 +30,7 @@ int main() {
     addr.sin_port        = htons(PORT);
     addr.sin_addr.s_addr = INADDR_ANY;
 
-    if((bind(s1, (struct sockaddr*)&addr, addr_len))) {
+    if((bind(s1, (struct sockaddr*)&addr, addrlen))) {
         perror("bind");
         exit(1);
     }
@@ -38,15 +39,16 @@ int main() {
         perror("listen");
         exit(1);
     }
+    printf("linseting on %i", PORT);
 
-    if((s2 = accept(s1, (struct sockaddr*)&addr, (socklen_t*)&addr_len)) < 0) {
+    if((s2 = accept(s1, (struct sockaddr*)&addr, (socklen_t*)&addrlen)) < 0) {
         perror("accept");
         exit(1);
     }
     puts("client connected");
 
-    send(s2, message_ptr, strlen(message_ptr), 0);
-    read(s2, in_buf, BUFFER_SIZE - 1);
+    send(s2, message, strlen(message), 0);
+    recv(s2, in_buf, BUFFER_SIZE - 1, 0);
     printf("%s", in_buf);
 
     close(s2);
