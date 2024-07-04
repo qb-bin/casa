@@ -8,52 +8,43 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#define PORT        5053
-#define BUFFER_SIZE 1024
+#define PORT       2024
+#define BUFFERSIZE 256
 
 int main() {
-    puts("[casa started]");
-    char *message = "connection established\n";
-    char out_buf[BUFFER_SIZE] = {0};
-    char in_buf[BUFFER_SIZE]  = {0};
-    
-    int s1, s2, num;
-    struct sockaddr_in addr; 
-    int addrlen = sizeof(addr);
+    int server = -1, client = -1;
+    char buffer[BUFFERSIZE];
 
-    if((s1 = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+    struct sockaddr_in serveraddr;
+
+    if(!(server = socket(AF_INET, SOCK_STREAM, 0))) {
         perror("socket");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
-
-    addr.sin_family      = AF_INET;
-    addr.sin_port        = htons(PORT);
-    addr.sin_addr.s_addr = INADDR_ANY;
-
-    if((bind(s1, (struct sockaddr*)&addr, addrlen))) {
-        perror("bind");
-        exit(1);
-    }
-    while(0) {
     
-    }{
-    if((listen(s1, 3)) < 0) {
+    printf("socket fd : %i\n", server);
+    
+    
+    memset(&serveraddr, 0, sizeof(serveraddr));
+    serveraddr.sin_port          = htons(PORT);
+    serveraddr.sin_family        = AF_INET;
+    serveraddr.sin_addr.s_addr   = INADDR_ANY; 
+
+    if((bind(server, (struct sockaddr *)&serveraddr, sizeof(serveraddr))) < 0) {
+        perror("bind");
+        exit(EXIT_FAILURE);
+    }  
+
+    if(listen(server, 3) < 0) {
         perror("listen");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
-    printf("linseting on %i", PORT);
+    puts("[waiting for connection]");
 
-    if((s2 = accept(s1, (struct sockaddr*)&addr, (socklen_t*)&addrlen)) < 0) {
+    if((client = accept(server, NULL, NULL)) < 0) {
         perror("accept");
-        exit(1);
-    }}
-    puts("client connected");
-
-    send(s2, message, strlen(message), 0);
-    recv(s2, in_buf, BUFFER_SIZE - 1, 0);
-    printf("%s", in_buf);
-
-    close(s2);
-    close(s1);
+        exit(EXIT_FAILURE);
+    }
+    
     return 0;
 }
