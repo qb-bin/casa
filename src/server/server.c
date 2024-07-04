@@ -8,7 +8,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#define PORT        9340
+#define PORT        9355
 #define BUFFER_SIZE 1024
 
 int main() {
@@ -34,7 +34,9 @@ int main() {
         perror("bind");
         exit(1);
     }
-
+    while(0) {
+    
+    }{
     if((listen(s1, 3)) < 0) {
         perror("listen");
         exit(1);
@@ -44,7 +46,7 @@ int main() {
     if((s2 = accept(s1, (struct sockaddr*)&addr, (socklen_t*)&addrlen)) < 0) {
         perror("accept");
         exit(1);
-    }
+    }}
     puts("client connected");
 
     send(s2, message, strlen(message), 0);
